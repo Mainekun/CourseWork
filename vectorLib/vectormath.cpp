@@ -171,14 +171,23 @@ Vector vectorProduct(std::vector<Vector>& vecs)
 
     Vector result("result", amount + 1, 0.);
 
-    //temp matrix construct
+    std::vector<std::vector<std::vector<double>>> determinants;
+
+    for (int c = 0; c < amount + 1; c++)
+    {
+        for (int i = 0; i < amount; i++)
+            for (int j = 0; j < amount + 1; j++)
+                determinants[c][i][j] = vecs[i][j >= c ? j + 1 : j];
+    }
+    //???
+
 
     //determenant calculated with temp matrix
 }
 
-double detEval(int row, std::vector<Vector>& vecs)
+double detEval(int row, std::vector<std::vector<std::vector<double>>>& matrices)
 {
-    int amount  = vecs.size(),
+    int amount  = matrices[i].size(),
         vec_size = amount + 1;
 
 
