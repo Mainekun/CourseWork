@@ -1,20 +1,36 @@
 #include "vectoritem.h"
 
-VectorItem::VectorItem() : _name(""), _vec(0) {}
-
-VectorItem::VectorItem(Vector* vec, std::string name) :
-    _name(name), _vec(vec)
+VectorItem::VectorItem()
+    : _name("")
+    , _vec(0)
 {}
 
-std::string VectorItem::name() const { return _name; }
+VectorItem::VectorItem(Vector *vec, std::string name)
+    : _name(name)
+    , _vec(vec)
+{}
 
-Vector* VectorItem::vec() const { return _vec; }
+std::string VectorItem::name() const
+{
+    return _name;
+}
 
-void VectorItem::setName(std::string name) { _name = name; }
+Vector *VectorItem::vec() const
+{
+    return _vec;
+}
 
-void VectorItem::setVec(Vector a) { _vec = new Vector(a); }
+void VectorItem::setName(std::string name)
+{
+    _name = name;
+}
 
-VectorItem VectorItem::operator=(VectorItem& a)
+void VectorItem::setVec(Vector a)
+{
+    _vec = new Vector(a);
+}
+
+VectorItem VectorItem::operator=(VectorItem &a)
 {
     _name = a.name();
     _vec = a.vec();

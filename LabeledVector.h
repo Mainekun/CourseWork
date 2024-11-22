@@ -10,6 +10,6 @@ struct LabeledVector
     Vector vec;
 };
 
-Q_DECLARE_METATYPE(LabeledVector*)
+Q_DECLARE_METATYPE(LabeledVector *)
 
 #endif // LABELEDVECTOR_H

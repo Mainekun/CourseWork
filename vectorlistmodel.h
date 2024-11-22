@@ -13,8 +13,7 @@ class VectorListModel : public QAbstractListModel
 public:
     explicit VectorListModel(QObject *parent = nullptr);
 
-    enum Roles
-    {
+    enum Roles {
         VectorRole = Qt::UserRole + 1,
     };
 
@@ -39,8 +38,10 @@ public:
 
     QString formConfig();
 
+    VecLib::Vector find(std::string);
+
 private:
-    QList<Vector> _vecList;
+    QList<VecLib::Vector> _vecList;
 };
 
 #endif // VECTORLISTMODEL_H

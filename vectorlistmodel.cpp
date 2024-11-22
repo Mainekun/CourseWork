@@ -35,22 +35,16 @@ QVariant VectorListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    switch (role)
-    {
-    case Qt::DisplayRole:
-        {
-        Vector curr = _vecList.at(index.row());
-        QString displayStr = tr(curr.getName().c_str()) +
-                             tr(" [") +
-                             tr(std::to_string(curr.size()).c_str()) +
-                             tr("]( ");
+    switch (role) {
+    case Qt::DisplayRole: {
+        VecLib::Vector curr = _vecList.at(index.row());
+        QString displayStr = tr(curr.getName().c_str()) + tr(" [")
+                             + tr(std::to_string(curr.size()).c_str()) + tr("]( ");
 
         int j = 0;
-        for (auto i : curr)
-        {
+        for (auto i : curr) {
             displayStr += tr(dtos(i, 2).c_str());
-            if (j < curr.size() - 1)
-            {
+            if (j < curr.size() - 1) {
                 displayStr += tr(", ");
                 j++;
             }
@@ -59,7 +53,7 @@ QVariant VectorListModel::data(const QModelIndex &index, int role) const
         displayStr += tr(" )");
 
         return displayStr;
-        }
+    }
 
     case VectorRole:
         return QVariant::fromValue(_vecList.at(index.row()));
@@ -72,9 +66,8 @@ QVariant VectorListModel::data(const QModelIndex &index, int role) const
 bool VectorListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (data(index, role) != value) {
-        if (role == VectorRole)
-        {
-            _vecList[index.row()] = value.value<Vector>();
+        if (role == VectorRole) {
+            _vecList[index.row()] = value.value<VecLib::Vector>();
         }
         emit dataChanged(index, index, {role});
         return true;
@@ -87,8 +80,7 @@ Qt::ItemFlags VectorListModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    return QAbstractItemModel::flags(index)
-           | Qt::ItemIsSelectable;
+    return QAbstractItemModel::flags(index) | Qt::ItemIsSelectable;
 }
 
 bool VectorListModel::insertRows(int row, int count, const QModelIndex &parent)
@@ -96,7 +88,7 @@ bool VectorListModel::insertRows(int row, int count, const QModelIndex &parent)
     beginInsertRows(parent, row, row + count - 1);
 
     for (int i = 0; i < count; i++)
-        _vecList.insert(row, Vector("sample", 1, 0.)); //!!!
+        _vecList.insert(row, VecLib::Vector("sample", 1, 0.)); //!!!
 
     endInsertRows();
     return true;
@@ -123,19 +115,29 @@ QString VectorListModel::formConfig()
 {
     QString cfg = tr("");
 
-    for (auto& i : _vecList)
-    {
-        QString line = tr(i.getName().c_str()) + tr(" ") +
-                       tr("[") + tr(std::to_string(i.size()).c_str()) + tr("] (");
+    for (auto &i : _vecList) {
+        QString line = tr(i.getName().c_str()) + tr(" ") + tr("[")
+                       + tr(std::to_string(i.size()).c_str()) + tr("] (");
 
-        for (unsigned long j = 0; j < i.size(); j++)
-        {
+        for (unsigned long j = 0; j < i.size(); j++) {
             line += tr(std::to_string(i.at(j)).c_str());
-            if (j < i.size() - 1) line += tr(", ");
+            if (j < i.size() - 1)
+                line += tr(", ");
         }
         line += ")\n";
         cfg += line;
     }
 
     return cfg;
+}
+
+VecLib::Vector VectorListModel::find(std::string name)
+{
+    for (auto& i : _vecList)
+    {
+        if (i.getName() == name)
+            return i;
+    }
+
+    throw (std::string("have not found: ") + name).c_str();
 }

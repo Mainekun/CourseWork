@@ -2,8 +2,8 @@
 #define OPERATORLISTMODEL_H
 
 #include <QAbstractListModel>
-#include <QStringList>
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 
 class OperatorListModel : public QAbstractListModel
@@ -11,8 +11,7 @@ class OperatorListModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    enum class OPTYPE
-    {
+    enum class OPTYPE {
         MININDECIES,
         MAXINDECIES,
         ELEMSUM,

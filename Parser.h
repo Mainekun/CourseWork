@@ -6,13 +6,11 @@
 
 using namespace VectorLexer;
 
-namespace VectorParser
-{
+namespace VectorParser {
 
-using Vectors = std::vector<Vector>;
+using Vectors = std::vector<VecLib::Vector>;
 
-enum ParseState
-{
+enum ParseState {
     NONE = 0,
     NAME_ENTERED = 1,
     SIZE_ENTERED = 2,
@@ -24,6 +22,6 @@ enum ParseState
 
 Vectors Parse(Tokens);
 
-}
+} // namespace VectorParser
 
 #endif // PARSER_H

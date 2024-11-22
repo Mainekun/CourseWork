@@ -19,7 +19,7 @@ VectorManagingForm::~VectorManagingForm()
 
 void VectorManagingForm::on_AddBtn_released()
 {
-    VectorInputDialog * Idlg =  new VectorInputDialog(this);
+    VectorInputDialog *Idlg = new VectorInputDialog(this);
     int status = Idlg->exec();
 
     if (status == QDialog::Accepted)
@@ -30,7 +30,7 @@ void VectorManagingForm::on_AddBtn_released()
 
 void VectorManagingForm::on_EditBtn_released()
 {
-    VectorEditDialog * Edlg = new VectorEditDialog(this);
+    VectorEditDialog *Edlg = new VectorEditDialog(this);
     int status = Edlg->exec();
 
     if (status == QDialog::Accepted)
@@ -38,4 +38,3 @@ void VectorManagingForm::on_EditBtn_released()
 
     delete Edlg;
 }
-

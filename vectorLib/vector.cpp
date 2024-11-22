@@ -1,8 +1,8 @@
 #include "vector.h"
 
-Vector::Vector() : _name(""), _size(0), _elements(nullptr) {}
+VecLib::Vector::Vector() : _name(""), _size(0), _elements(nullptr) {}
 
-constexpr void Vector::init(const std::string name, const ul size) try
+void VecLib::Vector::init(const std::string name, const ul size) try
 {
     _name = name;
     _size = size;
@@ -14,7 +14,7 @@ catch(std::bad_alloc& e)
     throw;
 }
 
-Vector::Vector(
+VecLib::Vector::Vector(
     const std::string name,
     const ul size,
     double const * elements)
@@ -25,7 +25,7 @@ Vector::Vector(
 }
 
 
-Vector::Vector(
+VecLib::Vector::Vector(
     const std::string name,
     const ul size,
     const double filler)
@@ -35,38 +35,37 @@ Vector::Vector(
         _elements[i] = filler;
 }
 
-constexpr
-Vector::Vector(const Vector & a)
+VecLib::Vector::Vector(const Vector & a)
 {
     init(a._name, a._size);
     i_RANGE_0_TO_N(_size)
         _elements[i] = a._elements[i];
 }
 
-Vector::~Vector() { delete[] _elements; }
+VecLib::Vector::~Vector() { delete[] _elements; }
 
-ul Vector::size() const { return _size; }
+ul VecLib::Vector::size() const { return _size; }
 
-double& Vector::at(ul index) const
+double& VecLib::Vector::at(ul index) const
 {
     if (index >= _size) throw std::out_of_range("");
     return _elements[index];
 }
 
-std::string Vector::getName() const
+std::string VecLib::Vector::getName() const
 {
     return _name;
 }
 
-void Vector::setName(std::string name)
+void VecLib::Vector::setName(std::string name)
 {
     _name = name;
 }
 
-inline bool isSizesEqual(Vector& a, Vector& b)
+inline bool VecLib::isSizesEqual(VecLib::Vector a, VecLib::Vector b)
 { return a._size == b._size; }
 
-bool operator==(Vector& a, Vector& b)
+bool VecLib::operator==(VecLib::Vector a, VecLib::Vector b)
 {
     if (!isSizesEqual(a, b)) return false;
 
@@ -77,7 +76,7 @@ bool operator==(Vector& a, Vector& b)
     return true;
 }
 
-Vector Vector::operator=(Vector a)
+VecLib::Vector VecLib::Vector::operator=(VecLib::Vector a)
 {
     _name = a._name;
 

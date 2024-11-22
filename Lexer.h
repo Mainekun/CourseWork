@@ -1,14 +1,13 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include <vector>
-#include <string>
-#include <variant>
 #include <exception>
 #include <stdexcept>
+#include <string>
+#include <variant>
+#include <vector>
 
-namespace VectorLexer
-{
+namespace VectorLexer {
 
 enum TokenType {
     NAME,
@@ -19,11 +18,13 @@ enum TokenType {
     SEPARATOR = ',',
 };
 
-class Token {
+class Token
+{
     TokenType _type;
     std::variant<std::string, double, unsigned long, char> _val;
 
     Token(char, TokenType);
+
 public:
     Token(std::string);
     Token(double);
@@ -47,12 +48,12 @@ bool isLetter(const char);
 bool isDigit(const char);
 bool isSpacing(const char);
 //bool isEnddef(const char);
-Token scanName(const char*&);
-Token scanDouble(const char*&);
-Token scanSize(const char*&);
+Token scanName(const char *&);
+Token scanDouble(const char *&);
+Token scanSize(const char *&);
 
 Tokens Tokenize(std::string);
 
-}
+} // namespace VectorLexer
 
 #endif // LEXER_H

@@ -1,54 +1,54 @@
 #include "vector.h"
 
-Vector::Iterator::Iterator(pointer ptr) : 
+VecLib::Vector::Iterator::Iterator(pointer ptr) :
 element_ptr(ptr) {}
 
-Vector::Iterator::reference Vector::Iterator::operator*() const
+VecLib::Vector::Iterator::reference VecLib::Vector::Iterator::operator*() const
 {
     return *element_ptr;
 }
 
-Vector::Iterator::pointer Vector::Iterator::operator->()
+VecLib::Vector::Iterator::pointer VecLib::Vector::Iterator::operator->()
 {
     return element_ptr;
 }
 
-Vector::Iterator& Vector::Iterator::operator++()
+VecLib::Vector::Iterator& VecLib::Vector::Iterator::operator++()
 {
     element_ptr++;
     return *this;
 }
 
-Vector::Iterator Vector::Iterator::operator++(int)
+VecLib::Vector::Iterator VecLib::Vector::Iterator::operator++(int)
 {
     Iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-Vector::Iterator& Vector::Iterator::operator+=(int n)
+VecLib::Vector::Iterator& VecLib::Vector::Iterator::operator+=(int n)
 {
     element_ptr += n;
     return *this;
 }
 
-Vector::Iterator& Vector::Iterator::operator-=(int n)
+VecLib::Vector::Iterator& VecLib::Vector::Iterator::operator-=(int n)
 {
     element_ptr -= n;
     return *this;
 }
 
-Vector::Iterator Vector::begin() const
+VecLib::Vector::Iterator VecLib::Vector::begin() const
 { return Iterator(&_elements[0]); }
 
-Vector::Iterator Vector::end() const
+VecLib::Vector::Iterator VecLib::Vector::end() const
 { return Iterator(&_elements[_size]); }
 
-Vector::Iterator::difference_type
-Vector::Iterator::operator -(const Vector::Iterator& a) const
+VecLib::Vector::Iterator::difference_type
+VecLib::Vector::Iterator::operator -(const VecLib::Vector::Iterator& a) const
 { return element_ptr - a.element_ptr; }
 
-Vector::Iterator::reference
-Vector::Iterator::operator [](int n) const
+VecLib::Vector::Iterator::reference
+VecLib::Vector::Iterator::operator [](int n) const
 { return *(element_ptr + n); }
 

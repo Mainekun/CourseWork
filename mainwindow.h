@@ -1,22 +1,22 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QListView>
 #include <QComboBox>
-#include <QPushButton>
-#include <QStringListModel>
 #include <QDialog>
-#include <QLabel>
-#include <QItemSelection>
-#include <QLayout>
-#include <QHBoxLayout>
-#include <QFileDialog>
 #include <QFile>
-#include <QTextStream>
+#include <QFileDialog>
+#include <QHBoxLayout>
+#include <QItemSelection>
+#include <QLabel>
+#include <QLayout>
+#include <QListView>
+#include <QMainWindow>
+#include <QPushButton>
 #include <QStringList>
-#include "interpreter.h"
+#include <QStringListModel>
+#include <QTextStream>
 #include "Parser.h"
+#include "interpreter.h"
 #include "vectorlistmodel.h"
 
 using namespace VectorParser;
@@ -45,16 +45,18 @@ private slots:
 
     void on_VectorView_activated(const QModelIndex &index);
 
-    void handleSelection_VectorView(const QItemSelection&);
+    void handleSelection_VectorView(const QItemSelection &);
 
     void on_SaveBtn_released();
 
     void on_OpenBtn_released();
 
+    void on_SolveBtn_released();
+
 private:
     Ui::MainWindow *ui;
-    QListView * VectorView;
-    VectorListModel * VecModel;
+    QListView *VectorView;
+    VectorListModel *VecModel;
 };
 
 #endif // MAINWINDOW_H

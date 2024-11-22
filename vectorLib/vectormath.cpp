@@ -1,41 +1,41 @@
 #include "vector.h"
 
-Vector Vector::operator-()
+VecLib::Vector VecLib::Vector::operator-()
 {
-    Vector negated = *this;
+    VecLib::Vector negated = *this;
 
     for (auto& i : negated) i *= -1;
 
     return negated;
 }
 
-Vector Vector::operator+(Vector& a)
+VecLib::Vector VecLib::operator+(VecLib::Vector a, VecLib::Vector b)
 {
-    SIZE_CHECK(*this, a);
+    SIZE_CHECK(a, b);
     
-    Vector b("", _size);
+    Vector c("", a.size());
 
-    i_RANGE_0_TO_N(_size) 
-        b.at(i) = this->at(i) + a.at(i);
+    i_RANGE_0_TO_N(a.size())
+        c.at(i) = a.at(i) + b.at(i);
 
-    return b;
+    return c;
 }
 
-Vector Vector::operator-(Vector& a)
+VecLib::Vector VecLib::operator-(VecLib::Vector a, VecLib::Vector b)
 {
-    SIZE_CHECK(*this, a);
+    SIZE_CHECK(a, b);
     
-    Vector b("", _size);
+    VecLib::Vector c("", a.size());
 
-    i_RANGE_0_TO_N(_size) 
-        b.at(i) = this->at(i) - a.at(i);
+    i_RANGE_0_TO_N(a.size())
+        c.at(i) = a.at(i) - b.at(i);
 
-    return b;
+    return c;
 }
 
-Vector Vector::operator*(double k)
+VecLib::Vector VecLib::Vector::operator*(double k)
 {
-    Vector a = *this;
+    VecLib::Vector a = *this;
 
     i_RANGE_0_TO_N(_size)
         a.at(i) *= k;
@@ -43,12 +43,12 @@ Vector Vector::operator*(double k)
     return a;
 }
 
-Vector Vector::operator/(double k)
+VecLib::Vector VecLib::Vector::operator/(double k)
 {
     if (k == 0) 
-        return Vector("", _size);
+        return VecLib::Vector("", _size);
 
-    Vector a = *this;
+    VecLib::Vector a = *this;
 
     i_RANGE_0_TO_N(_size)
         a.at(i) /= k;
@@ -56,7 +56,7 @@ Vector Vector::operator/(double k)
     return a;
 }
 
-double Vector::module()
+double VecLib::Vector::module()
 {
     double moduleValue = 0;
 
@@ -66,7 +66,7 @@ double Vector::module()
     return sqrt(moduleValue);
 }
 
-double Vector::elementsSum()
+double VecLib::Vector::elementsSum()
 {
     double sumOfElements = 0;
 
@@ -76,7 +76,7 @@ double Vector::elementsSum()
     return sumOfElements;
 }
 
-double Vector::elementsProd()
+double VecLib::Vector::elementsProd()
 {
     double prodOfElements = 1;
 
@@ -86,7 +86,7 @@ double Vector::elementsProd()
     return prodOfElements;
 }
 
-std::vector<ul> Vector::maxsIndices()
+std::vector<ul> VecLib::Vector::maxsIndices()
 {
     if (_size == 0) return std::vector<ul>(0);
     if (_size == 1) return std::vector<ul>{0};
@@ -108,7 +108,7 @@ std::vector<ul> Vector::maxsIndices()
     return indicies;
 }
 
-std::vector<ul> Vector::minsIndices()
+std::vector<ul> VecLib::Vector::minsIndices()
 {
     if (_size == 0) return std::vector<ul>(0);
     if (_size == 1) return std::vector<ul>{0};
@@ -130,7 +130,7 @@ std::vector<ul> Vector::minsIndices()
     return indicies;
 }
 
-double Vector::scalarProd(Vector& a)
+double VecLib::Vector::scalarProd(VecLib::Vector a)
 {
     SIZE_CHECK(*this, a);
 
@@ -149,13 +149,13 @@ std::string dtos(double val, int prec)
                        .find(".") + prec + 1);
 }
 
-Vector vectorProduct(std::vector<Vector>& vecs)
+VecLib::Vector VecLib::vectorProduct(std::vector<VecLib::Vector> vecs)
 {
     int amount = vecs.size();
     for (auto& i : vecs)
         if (i.size() != amount + 1) throw "illegal size for vector product";
 
-    Vector result("result", amount + 1, 0.);
+    VecLib::Vector result("result", amount + 1, 0.);
 
     std::vector<std::vector<std::vector<double>>> determinants;
     determinants.resize(amount + 1);
@@ -170,7 +170,7 @@ Vector vectorProduct(std::vector<Vector>& vecs)
     for (int c = 0; c < amount + 1; c++)
     {
         for (int i = 0; i < amount; i++)
-            for (int j = 0; j < amount + 1; j++)
+            for (int j = 0; j < amount; j++)
                 determinants[c][i][j] = vecs[i].at(j >= c ? j + 1 : j);
     }
 

@@ -2,9 +2,9 @@
 #define VECTORMANAGINGFORM_H
 
 #include <QWidget>
-#include "vectorlistmodel.h"
-#include "vectorinputdialog.h"
 #include "vectoreditdialog.h"
+#include "vectorinputdialog.h"
+#include "vectorlistmodel.h"
 
 namespace Ui {
 class VectorManagingForm;

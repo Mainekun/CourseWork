@@ -1,37 +1,52 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include <iostream>
-#include <vector>
-#include <variant>
-#include <string>
-#include <cassert>
-#include <stack>
-#include <map>
 #include "vectorLib/vector.h"
+#include <cassert>
+#include <iostream>
+#include <map>
+#include <stack>
+#include <string>
+#include <variant>
+#include <vector>
+#include "vectorLib/vector.h"
+#include "vectorlistmodel.h"
 
-enum TokenType
-{
-    NUM,
-    VEC,
-    OP
-};
+enum IntTokenType { NUM, VEC, OP, VECOBJ };
+
+namespace CalcTools {
 
 class Token
 {
-    TokenType type_;
-    std::variant<char, double, std::string> val_;
+    IntTokenType type_;
+    std::variant<char, double, std::string, VecLib::Vector> val_;
+
 public:
+    Token(char op)
+        : type_(OP)
+        , val_(op)
+    {}
+    Token(std::string vec)
+        : type_(VEC)
+        , val_(vec)
+    {}
+    Token(double num)
+        : type_(NUM)
+        , val_(num)
+    {}
+    Token(VecLib::Vector a)
+        : type_(VECOBJ)
+        , val_(a)
+    {}
 
-    Token(char op) : type_(OP), val_(op) {}
-    Token(std::string vec) : type_(VEC), val_(vec) {}
-    Token(double num) : type_(NUM), val_(num) {}
+    IntTokenType type() const { return type_; }
 
-    TokenType type() const { return type_; }
+    void operator=(Token);
 
-    operator double();//
-    operator char();//
-    operator std::string();//
+    operator double();      //
+    operator char();        //
+    operator std::string(); //
+    operator VecLib::Vector();
 
     //bool operator==(Token& a)
     //{
@@ -60,31 +75,28 @@ public:
 #define _leftS Token('[')
 #define _rightS Token(']')
 #define _comma Token(',')
-#define _vec(name) Token(# name)
+#define _vec(name) Token(#name)
 //Token _num(double num) { return Token(num); }
 
+using Tokens = std::vector<Token>;
 
+namespace ExtraFuns {
+Token readNum(char *&);
+Token readVec(char *&);
+Token readOp(char *&);
+bool ifNum(char *);
+bool ifVec(char *);
+bool ifOp(char *); //
 
-namespace CalcTools
-{
-    using Tokens = std::vector<Token>;
+} // namespace ExtraFuns
 
-    namespace ExtraFuns
-    {
-        Token readNum(char*&);
-        Token readVec(char*&);
-        Token readOp(char*&);
-        bool ifNum(char*);
-        bool ifVec(char*);
-        bool ifOp(char*);//
+Tokens Tokenize(const char *);
+bool CheckPars(Tokens);
+Tokens Parse(Tokens);
+bool isVec(Token);
+bool isNum(Token);
+Token Calculator(Tokens&, VectorListModel*);
 
-
-    }
-
-    Tokens Tokenize(const char*);
-    bool CheckPars(Tokens);
-    Tokens Parse(Tokens);
-
-}
+} // namespace CalcTools
 
 #endif // INTERPRETER_H

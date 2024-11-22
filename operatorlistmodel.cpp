@@ -19,10 +19,9 @@ QVariant OperatorListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    switch(role)
-    {
+    switch (role) {
     case Qt::DisplayRole:
-        return QVariant::fromValue(opers.at(index.row));
+        return QVariant::fromValue(opers.at(index.row()));
     }
 
     return QVariant();

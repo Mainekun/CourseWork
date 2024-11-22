@@ -7,10 +7,13 @@
 #include <QVariant>
 #include "matrix.h"
 
-#define SIZE_CHECK(a, b) if (!isSizesEqual(a, b)) throw SizesUnequality()
+#define SIZE_CHECK(a, b) if (!isSizesEqual(a, b)) throw VecLib::Vector::SizesUnequality()
 #define i_RANGE_0_TO_N(n) for (ul i = 0; i < n; i++)
 
 using ul = unsigned long;
+
+namespace VecLib
+{
 
 class Vector
 {
@@ -60,19 +63,19 @@ class Vector
         { return a.element_ptr != b.element_ptr; }
         friend Iterator operator+(int n, Iterator a)
         {
-            return Vector::Iterator(a.element_ptr + n);
+            return Iterator(a.element_ptr + n);
         }
         friend Iterator operator-(int n, Iterator a)
         {
-            return Vector::Iterator(a.element_ptr - n);
+            return Iterator(a.element_ptr - n);
         }
         friend Iterator operator+(Iterator a, int n)
         {
-            return Vector::Iterator(a.element_ptr + n);
+            return Iterator(a.element_ptr + n);
         }
         friend Iterator operator-(Iterator a, int n)
         {
-            return Vector::Iterator(a.element_ptr - n);
+            return Iterator(a.element_ptr - n);
         }
     };
 
@@ -93,11 +96,11 @@ public:
     };
 
     //vector
-    constexpr void init(const std::string, const ul);
+    void init(const std::string, const ul);
     Vector();
     Vector(const std::string, const ul, double const*);
     Vector(const std::string, const ul, const double = 0);
-    constexpr Vector(const Vector&);
+    Vector(const Vector&);
     ~Vector();
 
     ul size() const;
@@ -105,8 +108,8 @@ public:
     std::string getName() const;
     void setName(std::string);
 
-    friend bool isSizesEqual(Vector&, Vector&);
-    friend bool operator==(Vector&, Vector&);
+    friend bool isSizesEqual(Vector, Vector);
+    friend bool operator==(Vector, Vector);
 
     Vector operator=(Vector);
 
@@ -115,8 +118,7 @@ public:
 
     //math
     Vector operator-();
-    Vector operator+(Vector&);
-    Vector operator-(Vector&);
+
     Vector operator*(double);
     Vector operator/(double);
 
@@ -128,13 +130,18 @@ public:
     std::vector<ul> maxsIndices();
     std::vector<ul> minsIndices();
 
-    double scalarProd(Vector&);
+    double scalarProd(Vector);
 
 
 };
 
-Vector vectorProduct(std::vector<Vector>&);
+Vector operator+(Vector, Vector);
+Vector operator-(Vector, Vector);
 
-Q_DECLARE_METATYPE(Vector)
+Vector vectorProduct(std::vector<Vector>);
+
+}
+
+Q_DECLARE_METATYPE(VecLib::Vector)
 
 std::string dtos(double, int);
