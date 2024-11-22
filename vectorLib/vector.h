@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <QVariant>
+#include "matrix.h"
 
 #define SIZE_CHECK(a, b) if (!isSizesEqual(a, b)) throw SizesUnequality()
 #define i_RANGE_0_TO_N(n) for (ul i = 0; i < n; i++)
@@ -24,7 +25,7 @@ class Vector
     public:
         using pointer = double*;
         using reference = double&;
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::random_access_iterator_tag;
         using difference_type = std::ptrdiff_t;
 
         Iterator(pointer ptr);
@@ -33,13 +34,46 @@ class Vector
         pointer operator->();
 
         Iterator& operator++();
-
         Iterator operator++(int);
 
+        Iterator& operator--();
+        Iterator operator--(int);
+
+        Iterator& operator+=(int);
+        Iterator& operator-=(int);
+
+        difference_type operator-(const Iterator&) const;
+
+        reference operator[](int) const;
+
+        friend bool operator<=(const Iterator& a, const Iterator& b)
+        { return a.element_ptr <= b.element_ptr;}
+        friend bool operator>=(const Iterator& a, const Iterator& b)
+        { return a.element_ptr >= b.element_ptr;}
+        friend bool operator<(const Iterator& a, const Iterator& b)
+        { return a.element_ptr < b.element_ptr;}
+        friend bool operator>(const Iterator& a, const Iterator& b)
+        { return a.element_ptr > b.element_ptr;}
         friend bool operator== (const Iterator& a, const Iterator& b) 
         { return a.element_ptr == b.element_ptr; }
         friend bool operator!= (const Iterator& a, const Iterator& b) 
         { return a.element_ptr != b.element_ptr; }
+        friend Iterator operator+(int n, Iterator a)
+        {
+            return Vector::Iterator(a.element_ptr + n);
+        }
+        friend Iterator operator-(int n, Iterator a)
+        {
+            return Vector::Iterator(a.element_ptr - n);
+        }
+        friend Iterator operator+(Iterator a, int n)
+        {
+            return Vector::Iterator(a.element_ptr + n);
+        }
+        friend Iterator operator-(Iterator a, int n)
+        {
+            return Vector::Iterator(a.element_ptr - n);
+        }
     };
 
 public:
@@ -95,6 +129,8 @@ public:
     std::vector<ul> minsIndices();
 
     double scalarProd(Vector&);
+
+
 };
 
 Vector vectorProduct(std::vector<Vector>&);

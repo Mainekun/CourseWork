@@ -9,6 +9,8 @@ SOURCES += \
     interpreter.cpp \
     main.cpp \
     mainwindow.cpp \
+    matrix.cpp \
+    operatorlistmodel.cpp \
     vectorLib/vector.cpp \
     vectorLib/vectorexceptions.cpp \
     vectorLib/vectoriterator.cpp \
@@ -26,5 +28,7 @@ HEADERS += \
     Parser.h \
     interpreter.h \
     mainwindow.h \
+    matrix.h \
+    operatorlistmodel.h \
     vectorLib/vector.h \
     vectorlistmodel.h

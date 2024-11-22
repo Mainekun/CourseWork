@@ -142,20 +142,6 @@ double Vector::scalarProd(Vector& a)
     return prod;
 }
 
-Vector Vector::vectorProd(Vector& a)
-{
-    SIZE_CHECK(*this, a);
-    if (_size != 3) throw VectorProductException();
-
-    Vector b("", 3, 0.);
-
-    b.at(0) = this->at(1) * a.at(2) - this->at(2) * a.at(1);
-    b.at(1) = this->at(2) * a.at(0) - this->at(0) * a.at(2);
-    b.at(2) = this->at(0) * a.at(1) - this->at(1) * a.at(0);
-    
-    return b;
-}
-
 std::string dtos(double val, int prec)
 {
     return std::to_string(val)
@@ -172,24 +158,25 @@ Vector vectorProduct(std::vector<Vector>& vecs)
     Vector result("result", amount + 1, 0.);
 
     std::vector<std::vector<std::vector<double>>> determinants;
+    determinants.resize(amount + 1);
+
+    for (auto& i : determinants)
+    {
+        i.resize(amount);
+        for (auto& j : i)
+            j.resize(amount);
+    }
 
     for (int c = 0; c < amount + 1; c++)
     {
         for (int i = 0; i < amount; i++)
             for (int j = 0; j < amount + 1; j++)
-                determinants[c][i][j] = vecs[i][j >= c ? j + 1 : j];
+                determinants[c][i][j] = vecs[i].at(j >= c ? j + 1 : j);
     }
-    //???
 
+    for (int i = 0; i < amount + 1; i++)
+        result.at(i) = Matrix<>(determinants[i]).det();
 
-    //determenant calculated with temp matrix
-}
-
-double detEval(int row, std::vector<std::vector<std::vector<double>>>& matrices)
-{
-    int amount  = matrices[i].size(),
-        vec_size = amount + 1;
-
-
+    return result;
 }
 

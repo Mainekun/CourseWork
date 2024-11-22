@@ -14,6 +14,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QStringList>
 #include "interpreter.h"
 #include "Parser.h"
 #include "vectorlistmodel.h"
@@ -54,8 +55,6 @@ private:
     Ui::MainWindow *ui;
     QListView * VectorView;
     VectorListModel * VecModel;
-
-
 };
 
 #endif // MAINWINDOW_H

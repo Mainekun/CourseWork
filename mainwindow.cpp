@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     VecModel = new VectorListModel();
 
+
     ui->VectorView->setModel(VecModel);
     ui->OperandBox->setModel(VecModel);
 
