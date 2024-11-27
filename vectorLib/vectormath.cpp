@@ -175,7 +175,7 @@ VecLib::Vector VecLib::vectorProduct(std::vector<VecLib::Vector> vecs)
     }
 
     for (int i = 0; i < amount + 1; i++)
-        result.at(i) = Matrix<>(determinants[i]).det();
+        result.at(i) = (i % 2 == 0 ? 1 : -1) * Matrix<>(determinants[i]).det();
 
     return result;
 }

@@ -35,7 +35,7 @@ VecLib::Vector::Vector(
         _elements[i] = filler;
 }
 
-VecLib::Vector::Vector(const Vector & a)
+VecLib::Vector::Vector(const Vector& a)
 {
     init(a._name, a._size);
     i_RANGE_0_TO_N(_size)

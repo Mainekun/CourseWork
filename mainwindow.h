@@ -53,10 +53,14 @@ private slots:
 
     void on_SolveBtn_released();
 
+    void on_SaveResultBtn_released();
+
 private:
     Ui::MainWindow *ui;
     QListView *VectorView;
     VectorListModel *VecModel;
+
+    void errDlg(QString);
 };
 
 #endif // MAINWINDOW_H

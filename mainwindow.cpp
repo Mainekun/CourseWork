@@ -1,6 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::errDlg(QString text)
+{
+    QDialog *errDlg = new QDialog(this);
+    errDlg->setWindowTitle(tr("Error"));
+
+    QLabel *errTxt = new QLabel(text, errDlg);
+
+    errDlg->exec();
+
+    delete errTxt;
+    delete errDlg;
+
+    return;
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -246,5 +261,36 @@ void MainWindow::on_SolveBtn_released()
     {
         ui->ResultField->setText("unknown error");
     }
+}
+
+
+void MainWindow::on_SaveResultBtn_released()
+{
+    QString line = ui->ResultField->toPlainText();
+    if (line.size() == 0)
+    {
+        QDialog * err = new QDialog(this);
+        err->setWindowTitle(tr("Error"));
+
+        QLabel * errlbl = new QLabel(tr("empty line"), err);
+
+        err->exec();
+
+        delete errlbl;
+        delete err;
+    }
+
+    VecLib::Vector a;
+
+    try {
+        a = VectorParser::Parse(VectorLexer::Tokenize(line.toStdString()))[0];
+    }
+    catch (...)
+    {
+        errDlg(tr("caught exeption"));
+    }
+
+    VecModel->insertRows(0, 1);
+    VecModel->setData(VecModel->index(0), QVariant::fromValue(a), VectorListModel::VectorRole);
 }
 

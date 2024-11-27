@@ -234,9 +234,23 @@
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>361</width>
+        <width>281</width>
         <height>70</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SaveResultBtn">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>50</y>
+        <width>70</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Сохранить
+ результат</string>
       </property>
      </widget>
     </widget>

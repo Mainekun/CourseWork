@@ -131,7 +131,7 @@ bool CalcTools::CheckPars(Tokens tokens)
 
         if (s != '(' && s != ')' && s != '[' && s != ']')
             continue;
-
+//[(])
         switch (s) {
         case '(':
         case '[':

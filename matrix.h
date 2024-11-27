@@ -95,7 +95,7 @@ public:
             return matrix[0][0];
 
         if (size == 2)
-            return this->at(0, 0) * this->at(1, 1) - this->at(1, 0) * this->at(0, 1);
+            return this->at(1, 0) * this->at(0, 1) - this->at(0, 0) * this->at(1, 1);
 
         T result = 0;
 

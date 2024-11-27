@@ -43,6 +43,7 @@ public:
     QTextEdit *SentanceField;
     QPushButton *SolveBtn;
     QTextEdit *ResultField;
+    QPushButton *SaveResultBtn;
     QWidget *UtilityTab;
     QComboBox *OperatorBox;
     QComboBox *OperandBox;
@@ -128,7 +129,10 @@ public:
         SolveBtn->setGeometry(QRect(300, 10, 71, 30));
         ResultField = new QTextEdit(CalcTab);
         ResultField->setObjectName("ResultField");
-        ResultField->setGeometry(QRect(10, 50, 361, 70));
+        ResultField->setGeometry(QRect(10, 50, 281, 70));
+        SaveResultBtn = new QPushButton(CalcTab);
+        SaveResultBtn->setObjectName("SaveResultBtn");
+        SaveResultBtn->setGeometry(QRect(300, 50, 70, 70));
         FuncTabBox->addTab(CalcTab, QString());
         FuncTabBox->setTabText(FuncTabBox->indexOf(CalcTab), QString::fromUtf8("\320\232\320\260\320\273\321\214\320\272\321\203\320\273\321\217\321\202\320\276\321\200"));
         UtilityTab = new QWidget();
@@ -175,6 +179,8 @@ public:
         SaveBtn->setText(QCoreApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         SaveChangesBtn->setText(QCoreApplication::translate("MainWindow", "\320\230\320\267\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         SolveBtn->setText(QCoreApplication::translate("MainWindow", "\320\240\320\265\321\210\320\270\321\202\321\214", nullptr));
+        SaveResultBtn->setText(QCoreApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214\n"
+" \321\200\320\265\320\267\321\203\320\273\321\214\321\202\320\260\321\202", nullptr));
         ExecBtn->setText(QCoreApplication::translate("MainWindow", "\320\222\321\213\321\207\320\270\321\201\320\273\320\270\321\202\321\214", nullptr));
         FuncTabBox->setTabText(FuncTabBox->indexOf(UtilityTab), QCoreApplication::translate("MainWindow", "\320\240\320\260\320\267\320\275\320\276\320\265", nullptr));
     } // retranslateUi
