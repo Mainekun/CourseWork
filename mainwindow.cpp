@@ -4,9 +4,22 @@
 void MainWindow::errDlg(QString text)
 {
     QDialog *errDlg = new QDialog(this);
-    errDlg->setWindowTitle(tr("Error"));
+    errDlg->setWindowTitle("Error");
 
-    QLabel *errTxt = new QLabel(text, errDlg);
+    errDlg->setSizeGripEnabled(false);
+
+    QHBoxLayout * layout = new QHBoxLayout(errDlg);
+
+    QLabel *errTxt = new QLabel(text);
+
+    layout->addWidget(errTxt);
+
+    errDlg->setMinimumSize(350, 50);
+    errDlg->setMaximumSize(350, 50);
+
+    errTxt->setFont(QFont("Helvetica", 14, QFont::Thin, false));
+    errTxt->setAlignment(Qt::AlignCenter);
+    errTxt->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     errDlg->exec();
 
@@ -47,7 +60,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_VectorView_clicked(const QModelIndex &index)
 {
-    VecLib::Vector vec = (index.data(VectorListModel::VectorRole)).value<VecLib::Vector>();
+    VecLib::Vector vec = (index.data(VectorListModel::VectorRole))
+                             .value<VecLib::Vector>();
+
     QString charString = tr(vec.getName().c_str()) + tr(" [")
                          + tr(std::to_string(vec.size()).c_str()) + tr("] (");
 
@@ -93,18 +108,7 @@ void MainWindow::on_SaveChangesBtn_released()
         QModelIndex selected = ui->VectorView->selectionModel()->selectedIndexes()[0];
         VecModel->setData(selected, QVariant::fromValue(vec), VectorListModel::VectorRole);
     } catch (...) {
-        QDialog *dlg = new QDialog(this);
-        dlg->setFixedSize(140, 40);
-
-        QHBoxLayout *hlayout = new QHBoxLayout(dlg);
-
-        QLabel *text = new QLabel(tr("bad vector"));
-        hlayout->addWidget(text);
-        text->setFont(QFont(tr("Comic Sans MS"), 14, QFont::Thin, false));
-
-        //text->setAlignment(Qt::AlignCenter);
-
-        dlg->exec();
+        errDlg("Bad vector");
     }
 }
 
@@ -139,17 +143,7 @@ void MainWindow::on_SaveBtn_released()
     QFile fileToSave(fileName);
 
     if (!fileToSave.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QDialog *errDlg = new QDialog(this);
-        errDlg->setWindowTitle(tr("Error"));
-
-        QLabel *errTxt = new QLabel(tr("unable to find location"), errDlg);
-
-        errDlg->exec();
-
-        delete errTxt;
-        delete errDlg;
-
-        return;
+        errDlg("unable to find location");
     }
 
     QTextStream out(&fileToSave);
@@ -172,17 +166,7 @@ void MainWindow::on_OpenBtn_released()
     QFile file(fileName);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QDialog *errDlg = new QDialog(this);
-        errDlg->setWindowTitle(tr("Error"));
-
-        QLabel *errTxt = new QLabel(tr("unable to find location"), errDlg);
-
-        errDlg->exec();
-
-        delete errTxt;
-        delete errDlg;
-
-        return;
+        errDlg("unable to find location");
     }
 
     QList<VecLib::Vector> updatedList;
@@ -199,15 +183,7 @@ void MainWindow::on_OpenBtn_released()
         }
     }
     catch (const char *) {
-        QDialog *errDlg = new QDialog(this);
-        errDlg->setWindowTitle(tr("Error"));
-
-        QLabel *errTxt = new QLabel(tr("config malformed"), errDlg);
-
-        errDlg->exec();
-
-        delete errTxt;
-        delete errDlg;
+        errDlg("config malformed");
 
         return;
     }
@@ -229,7 +205,7 @@ void MainWindow::on_SolveBtn_released()
 
     try {
         CalcTools::Tokens toks = CalcTools::Tokenize(expr.c_str());
-        if (!CalcTools::CheckPars(toks)) {ui->ResultField->setText(tr("invalid syntax")); return;}
+        if (!CalcTools::CheckPars(toks)) {ui->ResultField->setText("invalid syntax"); return;}
         CalcTools::Tokens RPN = CalcTools::Parse(toks);
         CalcTools::Token result = CalcTools::Calculator(RPN, VecModel);
 
@@ -260,11 +236,11 @@ void MainWindow::on_SolveBtn_released()
     }
     catch(const char* e)
     {
-        ui->ResultField->setText(QString(e));
+        errDlg(e);
     }
     catch(...)
     {
-        ui->ResultField->setText("unknown error");
+        ui->ResultField->setText("unknown exception");
     }
 }
 
@@ -274,28 +250,24 @@ void MainWindow::on_SaveResultBtn_released()
     QString line = ui->ResultField->toPlainText();
     if (line.size() == 0)
     {
-        QDialog * err = new QDialog(this);
-        err->setWindowTitle(tr("Error"));
-
-        QLabel * errlbl = new QLabel(tr("empty line"), err);
-
-        err->exec();
-
-        delete errlbl;
-        delete err;
+        errDlg("empty line");
+        return;
     }
 
     VecLib::Vector a;
 
     try {
         a = VectorParser::Parse(VectorLexer::Tokenize(line.toStdString()))[0];
+        VecModel->insertRows(0, 1);
+        VecModel->setData(VecModel->index(0),
+                          QVariant::fromValue(a),
+                          VectorListModel::VectorRole);
     }
     catch (...)
     {
-        errDlg(tr("caught exeption"));
+        errDlg("nothing to save");
     }
 
-    VecModel->insertRows(0, 1);
-    VecModel->setData(VecModel->index(0), QVariant::fromValue(a), VectorListModel::VectorRole);
+
 }
 
