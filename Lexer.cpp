@@ -36,25 +36,25 @@ VectorLexer::Token VectorLexer::Token::RightPar()
 VectorLexer::Token::operator double() const
 {
     if (_type != DOUBLE_VAL)
-        throw std::exception();
+        throw " ";
     return std::get<double>(_val);
 }
 VectorLexer::Token::operator std::string() const
 {
     if (_type != NAME)
-        throw std::exception();
+        throw " ";
     return std::get<std::string>(_val);
 }
 VectorLexer::Token::operator unsigned long() const
 {
     if (_type != SIZE)
-        throw std::exception();
+        throw " ";
     return std::get<unsigned long>(_val);
 }
 VectorLexer::Token::operator char() const
 {
     if (_type != SEPARATOR && _type != START_SEQ && _type != FINISH_SEQ)
-        throw std::exception();
+        throw " ";
     return std::get<char>(_val);
 }
 
@@ -78,7 +78,7 @@ VectorLexer::Tokens VectorLexer::Tokenize(std::string expr)
         } else if (*curr == '[') {
             Token size = scanSize(curr);
             result.push_back(size);
-        } else if (isDigit(*curr)) {
+        } else if (isDigit(*curr) || (*curr == '-' && isDigit(curr[1]))) {
             Token elem = scanDouble(curr);
             result.push_back(elem);
         } else if (*curr == '(') {
@@ -136,15 +136,21 @@ VectorLexer::Token VectorLexer::scanSize(const char *&s)
 {
     s++;
     std::string size = "";
-    while (*s && isDigit(*s) && *s != ']')
+    while (*s && *s != ']')
+    {
+        if (!isDigit(*s))
+            throw " ";
         size += *(s++);
+    }
     s++;
+
+    if (size.empty()) throw " ";
     return Token(std::stoul(size));
 }
 VectorLexer::Token VectorLexer::scanDouble(const char *&s)
 {
     std::string elem = "";
-    while (*s && (isDigit(*s) || *s == '.'))
+    while (*s && (isDigit(*s) || *s == '.' || *s == '-'))
         elem += *(s++);
     return Token(std::stod(elem));
 }

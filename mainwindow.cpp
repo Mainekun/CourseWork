@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->SaveChangesBtn->setEnabled(false);
     ui->VectorPreview->setEnabled(false);
+    ui->RemoveBtn->setEnabled(false);
 
     VecModel = new VectorListModel();
 
@@ -63,6 +64,7 @@ void MainWindow::on_VectorView_clicked(const QModelIndex &index)
 
     ui->SaveChangesBtn->setEnabled(true);
     ui->VectorPreview->setEnabled(true);
+    ui->RemoveBtn->setEnabled(true);
     ui->VectorPreview->setText(charString);
 }
 
@@ -112,9 +114,11 @@ void MainWindow::handleSelection_VectorView(const QItemSelection &selection)
         ui->SaveChangesBtn->setEnabled(false);
         ui->VectorPreview->setText(tr(""));
         ui->VectorPreview->setEnabled(false);
+        ui->RemoveBtn->setEnabled(false);
     } else {
         ui->SaveChangesBtn->setEnabled(true);
         ui->VectorPreview->setEnabled(true);
+        ui->RemoveBtn->setEnabled(true);
     }
 }
 
@@ -193,7 +197,8 @@ void MainWindow::on_OpenBtn_released()
                 break;
             updatedList.append(Parse(VectorLexer::Tokenize(stdStr))[0]);
         }
-    } catch (const char *) {
+    }
+    catch (const char *) {
         QDialog *errDlg = new QDialog(this);
         errDlg->setWindowTitle(tr("Error"));
 

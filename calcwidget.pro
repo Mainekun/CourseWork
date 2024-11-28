@@ -9,7 +9,6 @@ SOURCES += \
     interpreter.cpp \
     main.cpp \
     mainwindow.cpp \
-    matrix.cpp \
     operatorlistmodel.cpp \
     vectorLib/vector.cpp \
     vectorLib/vectorexceptions.cpp \
