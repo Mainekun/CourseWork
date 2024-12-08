@@ -5,8 +5,8 @@ VectorLexer::Token::Token(char sym, TokenType type)
     , _val(sym)
 {}
 
-VectorLexer::Token::Token(double val)
-    : _type(DOUBLE_VAL)
+VectorLexer::Token::Token(e_type val)
+    : _type(VAL)
     , _val(val)
 {}
 
@@ -33,11 +33,11 @@ VectorLexer::Token VectorLexer::Token::RightPar()
     return Token(')', FINISH_SEQ);
 }
 
-VectorLexer::Token::operator double() const
+VectorLexer::Token::operator e_type() const
 {
-    if (_type != DOUBLE_VAL)
+    if (_type != VAL)
         throw " ";
-    return std::get<double>(_val);
+    return std::get<e_type>(_val);
 }
 VectorLexer::Token::operator std::string() const
 {
@@ -79,7 +79,7 @@ VectorLexer::Tokens VectorLexer::Tokenize(std::string expr)
             Token size = scanSize(curr);
             result.push_back(size);
         } else if (isDigit(*curr) || (*curr == '-' && isDigit(curr[1]))) {
-            Token elem = scanDouble(curr);
+            Token elem = scanNum(curr);
             result.push_back(elem);
         } else if (*curr == '(') {
             Token start = Token::LeftPar();
@@ -115,16 +115,16 @@ bool VectorLexer::isLetter(const char c)
 }
 bool VectorLexer::isDigit(const char c)
 {
-    return c >= '0' && c <= '9';
+    return c >= '0' && c <= '9' ;
 }
 bool VectorLexer::isSpacing(const char c)
 {
     return c == ' ' || c == '\t' || c == '\n';
 }
-//bool isEnddef(const char c)
-//{
-//    return c == '\n';
-//}
+bool isEnddef(const char c)
+{
+    return c == '\n';
+}
 VectorLexer::Token VectorLexer::scanName(const char *&s)
 {
     std::string name;
@@ -139,18 +139,28 @@ VectorLexer::Token VectorLexer::scanSize(const char *&s)
     while (*s && *s != ']')
     {
         if (!isDigit(*s))
-            throw " ";
+            throw "While scaning size got NaN";
         size += *(s++);
     }
     s++;
 
-    if (size.empty()) throw " ";
+    if (size.empty()) throw "Size field is empty";
     return Token(std::stoul(size));
 }
-VectorLexer::Token VectorLexer::scanDouble(const char *&s)
+VectorLexer::Token VectorLexer::scanNum(const char *&s)
 {
+    ul dots = 0;
     std::string elem = "";
-    while (*s && (isDigit(*s) || *s == '.' || *s == '-'))
-        elem += *(s++);
+    while (*s && (isDigit(*s) || *s == '-' || *s == '.'))
+    {
+        if (*s == '.')
+        {
+            if (dots > 1)
+                throw "too many dots in num";
+            else
+                dots++;
+        }
+            elem += *(s++);
+    }
     return Token(std::stod(elem));
 }

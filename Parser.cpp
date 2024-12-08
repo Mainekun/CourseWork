@@ -16,7 +16,7 @@ VectorParser::Vectors VectorParser::Parse(Tokens tokens)
 
     std::string name;
     unsigned long size;
-    std::vector<double> elements;
+    std::vector<e_type> elements;
 
     for (auto i = tokens.begin(); i != tokens.end(); i++) {
         switch (i->Type()) {
@@ -45,7 +45,7 @@ VectorParser::Vectors VectorParser::Parse(Tokens tokens)
             state = state | START_ELEMENTS;
             break;
 
-        case DOUBLE_VAL:
+        case VAL:
             if (!(state & NAME_ENTERED))
                 throw "Name was not defined";
             if (!(state & SIZE_ENTERED))
@@ -56,7 +56,7 @@ VectorParser::Vectors VectorParser::Parse(Tokens tokens)
                 throw "Value was already written";
             if (!(state & START_ELEMENTS) && !(state & SEP))
                 throw "Need separator between elements";
-            elements.push_back((double) (*i));
+            elements.push_back((e_type) (*i));
             state = state | ELEMENT;
             state = state & ~(SEP | FINISH_ELEMENTS);
             break;

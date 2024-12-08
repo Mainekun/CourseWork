@@ -6,12 +6,13 @@
 #include <string>
 #include <variant>
 #include <vector>
+#include "vectorLib/vector.h"
 
 namespace VectorLexer {
 
 enum TokenType {
     NAME,
-    DOUBLE_VAL,
+    VAL,
     SIZE,
     START_SEQ = '(',
     FINISH_SEQ = ')',
@@ -21,20 +22,20 @@ enum TokenType {
 class Token
 {
     TokenType _type;
-    std::variant<std::string, double, unsigned long, char> _val;
+    std::variant<std::string, e_type, unsigned long, char> _val;
 
     Token(char, TokenType);
 
 public:
     Token(std::string);
-    Token(double);
+    Token(e_type);
     Token(unsigned long);
 
     static Token Comma();
     static Token LeftPar();
     static Token RightPar();
 
-    operator double() const;
+    operator e_type() const;
     operator std::string() const;
     operator unsigned long() const;
     operator char() const;
@@ -49,7 +50,7 @@ bool isDigit(const char);
 bool isSpacing(const char);
 //bool isEnddef(const char);
 Token scanName(const char *&);
-Token scanDouble(const char *&);
+Token scanNum(const char *&);
 Token scanSize(const char *&);
 
 Tokens Tokenize(std::string);

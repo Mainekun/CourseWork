@@ -11,6 +11,7 @@
 #define i_RANGE_0_TO_N(n) for (ul i = 0; i < n; i++)
 
 using ul = unsigned long;
+using e_type = double;
 
 namespace VecLib
 {
@@ -19,15 +20,15 @@ class Vector
 {
     std::string _name;
     ul _size;
-    double * _elements;
+    e_type * _elements;
     
     class Iterator
     {
-        double* element_ptr;
+        e_type* element_ptr;
 
     public:
-        using pointer = double*;
-        using reference = double&;
+        using pointer = e_type*;
+        using reference = e_type&;
         using iterator_category = std::random_access_iterator_tag;
         using difference_type = std::ptrdiff_t;
 
@@ -98,18 +99,33 @@ public:
     //vector
     void init(const std::string, const ul);
     Vector();
-    Vector(const std::string, const ul, double const*);
-    Vector(const std::string, const ul, const double = 0);
+    Vector(const std::string, const ul, e_type const*);
+    Vector(const std::string, const ul, const e_type = 0);
     Vector(const Vector&);
     ~Vector();
 
     ul size() const;
-    double& at(ul) const;
+    e_type& at(ul) const;
     std::string getName() const;
     void setName(std::string);
 
-    friend bool isSizesEqual(Vector, Vector);
-    friend bool operator==(Vector, Vector);
+    std::string at_s(ul index)
+    {
+        return std::to_string(this->at(index));
+    }
+
+    friend bool isSizesEqual(Vector a, Vector b)
+    { return a._size == b._size; }
+    friend bool operator==(Vector a, Vector b)
+    {
+        if (!isSizesEqual(a, b)) return false;
+
+        for (ul i = 0; i < a._size; i++)
+            if (a.at(i) != b.at(i))
+                return false;
+
+        return true;
+    }
 
     Vector operator=(Vector);
 
@@ -119,20 +135,26 @@ public:
     //math
     Vector operator-();
 
-    Vector operator*(double);
-    Vector operator/(double);
+    Vector operator*(e_type);
+    Vector operator/(e_type);
 
-    double module();
+    e_type module();
 
-    double elementsSum();
-    double elementsProd();
+    e_type elementsSum();
+    e_type elementsProd();
 
     std::vector<ul> maxsIndices();
     std::vector<ul> minsIndices();
 
-    double scalarProd(Vector);
+    e_type scalarProd(Vector);
 
+    Vector AscSort();
+    Vector DesSort();
 
+    Vector reverse();
+
+    friend Vector GCD(Vector, Vector);
+    friend Vector LCD(Vector, Vector);
 };
 
 Vector operator+(Vector, Vector);

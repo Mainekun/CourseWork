@@ -55,6 +55,10 @@ private slots:
 
     void on_SaveResultBtn_released();
 
+    void on_MaxIndexesBtn_released();
+
+    void on_MinIndexesBtn_released();
+
 private:
     Ui::MainWindow *ui;
     QListView *VectorView;

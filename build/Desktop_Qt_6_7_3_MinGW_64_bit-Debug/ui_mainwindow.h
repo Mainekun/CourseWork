@@ -45,10 +45,10 @@ public:
     QTextEdit *ResultField;
     QPushButton *SaveResultBtn;
     QWidget *UtilityTab;
-    QComboBox *OperatorBox;
     QComboBox *OperandBox;
     QTextEdit *ResultLine;
-    QPushButton *ExecBtn;
+    QPushButton *MaxIndexesBtn;
+    QPushButton *MinIndexesBtn;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -137,18 +137,18 @@ public:
         FuncTabBox->setTabText(FuncTabBox->indexOf(CalcTab), QString::fromUtf8("\320\232\320\260\320\273\321\214\320\272\321\203\320\273\321\217\321\202\320\276\321\200"));
         UtilityTab = new QWidget();
         UtilityTab->setObjectName("UtilityTab");
-        OperatorBox = new QComboBox(UtilityTab);
-        OperatorBox->setObjectName("OperatorBox");
-        OperatorBox->setGeometry(QRect(130, 10, 120, 30));
         OperandBox = new QComboBox(UtilityTab);
         OperandBox->setObjectName("OperandBox");
         OperandBox->setGeometry(QRect(10, 10, 110, 30));
         ResultLine = new QTextEdit(UtilityTab);
         ResultLine->setObjectName("ResultLine");
-        ResultLine->setGeometry(QRect(10, 50, 361, 70));
-        ExecBtn = new QPushButton(UtilityTab);
-        ExecBtn->setObjectName("ExecBtn");
-        ExecBtn->setGeometry(QRect(260, 10, 110, 30));
+        ResultLine->setGeometry(QRect(10, 50, 351, 70));
+        MaxIndexesBtn = new QPushButton(UtilityTab);
+        MaxIndexesBtn->setObjectName("MaxIndexesBtn");
+        MaxIndexesBtn->setGeometry(QRect(130, 10, 110, 30));
+        MinIndexesBtn = new QPushButton(UtilityTab);
+        MinIndexesBtn->setObjectName("MinIndexesBtn");
+        MinIndexesBtn->setGeometry(QRect(250, 10, 110, 30));
         FuncTabBox->addTab(UtilityTab, QString());
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -163,7 +163,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        FuncTabBox->setCurrentIndex(0);
+        FuncTabBox->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -181,7 +181,8 @@ public:
         SolveBtn->setText(QCoreApplication::translate("MainWindow", "\320\240\320\265\321\210\320\270\321\202\321\214", nullptr));
         SaveResultBtn->setText(QCoreApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214\n"
 " \321\200\320\265\320\267\321\203\320\273\321\214\321\202\320\260\321\202", nullptr));
-        ExecBtn->setText(QCoreApplication::translate("MainWindow", "\320\222\321\213\321\207\320\270\321\201\320\273\320\270\321\202\321\214", nullptr));
+        MaxIndexesBtn->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\320\264\320\265\320\272\321\201\321\213 \320\274\320\260\320\272\321\201.", nullptr));
+        MinIndexesBtn->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\320\264\320\265\320\272\321\201\321\213 \320\274\320\270\320\275.", nullptr));
         FuncTabBox->setTabText(FuncTabBox->indexOf(UtilityTab), QCoreApplication::translate("MainWindow", "\320\240\320\260\320\267\320\275\320\276\320\265", nullptr));
     } // retranslateUi
 

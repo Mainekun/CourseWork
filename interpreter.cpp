@@ -1,13 +1,41 @@
 #include "interpreter.h"
 
 std::map<char, int> opersPriority
-    = {{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'(', 0}, {')', 0}, {'[', 0}, {']', 0}, {',', 0}};
+    = {{'+', 1},
+       {'-', 1},
+       {'*', 2},
+       {'/', 2},
+       {'(', 0},
+       {')', 0},
+       {'[', 0},
+       {']', 0},
+       {',', 0},
+       {'|', 3},
+       {'&', 3},
+       {'%', 3},
+       {'$', 3},
+       {'a', 3},
+       {'d', 3},
+       {'r', 3},
+       {'#', 3},
+       {'^', 3}
+};
 
-CalcTools::Token::operator double()
+// '\' - sumElems
+// '&' - prodElems
+// '%' - module
+// '$' - at
+// 'a' - ascending sort
+// 'd' - descending sort
+// 'r' - reverse
+// '#' - GCD
+// '^' - LCR
+
+CalcTools::Token::operator e_type()
 {
     if (type_ != NUM)
         throw "wrong access type";
-    return std::get<double>(val_);
+    return std::get<e_type>(val_);
 }
 
 CalcTools::Token::operator char()
@@ -40,18 +68,23 @@ void CalcTools::Token::operator =(CalcTools::Token a)
 
 CalcTools::Token CalcTools::ExtraFuns::readNum(char *&c)
 {
-    int dotCount = 0;
-    std::string doubleStr = "";
-    while (*c && (ifNum(c) || *c == '.')) {
+    ul minus = 0;
+    ul dota = 0;
+    std::string numStr = "";
+    while (*c && (ifNum(c) || *c == '-')) {
+        if (*c == '-')
+            minus++;
         if (*c == '.')
-            dotCount++;
-        doubleStr += *(c++);
+            dota++;
+        numStr += *(c++);
     }
 
-    if (dotCount > 1)
-        throw "bad num";
+    if (minus > 1)
+        throw "too many \'-\' symbols in num";
+    if (dota > 1)
+        throw "too many \'.\' symbols in num";
 
-    double num = std::stod(doubleStr);
+    e_type num = std::stod(numStr);
     return Token(num);
 }
 
@@ -73,7 +106,7 @@ CalcTools::Token CalcTools::ExtraFuns::readOp(char *&c)
 
 bool CalcTools::ExtraFuns::ifNum(char *c)
 {
-    return (*c >= '0' && *c <= '9') || (*c == '.' && *(c + 1) >= '0' && *(c + 1) <= '9');
+    return (*c >= '0' && *c <= '9');
 }
 
 bool CalcTools::ExtraFuns::ifVec(char *c)
@@ -84,7 +117,18 @@ bool CalcTools::ExtraFuns::ifVec(char *c)
 bool CalcTools::ExtraFuns::ifOp(char *c)
 {
     return *c == '+' || *c == '-' || *c == '*' || *c == '/' || *c == '(' || *c == ')' || *c == '['
-           || *c == ']' || *c == ',';
+           || *c == ']' || *c == ',' || *c == '|' || *c == '&' || *c == '%'
+           || *c == '$' || *c == '<' || *c == '>' || *c == '~' || *c == '#'
+           || *c == '^';
+    // '\' - sumElems
+    // '&' - prodElems
+    // '%' - module
+    // '$' - at
+    // '<' - ascending sort
+    // '>' - descending sort
+    // '~' - reverse
+    // '#' - GCD
+    // '^' - LCR
 }
 
 //CalcTools
@@ -208,19 +252,43 @@ CalcTools::Tokens CalcTools::Parse(Tokens a)
                 while ((char) opStack.top() != '[')
                     extractStack(output, opStack);
 
-                output.push_back(Token((double)commaCount + 1));
+                output.push_back(Token((e_type)commaCount + 1));
                 output.push_back(Token('p'));
 
                 commaCount = 0;
 
                 opStack.pop();
+                break;
+            case '|':
+            case '&':
+            case '%':
+            case '$':
+            case '<':
+            case '>':
+            case '~':
+            case '#':
+            case '^':
+                opStack.push(i);
             }
+        case VECOBJ:
+            break;
         }
+
     }
+
+    // '\' - sumElems
+    // '&' - prodElems
+    // '%' - module
+    // '$' - at
+    // 'a' - ascending sort
+    // 'd' - descending sort
+    // 'r' - reverse
+    // '#' - GCD
+    // '^' - LCR
 
     while (!opStack.empty()) {
         if ((char) opStack.top() == '(')
-            throw "illegal expression";
+            throw "illegal expression: pls check parenthessis";
         output.push_back(opStack.top());
         opStack.pop();
     }
@@ -228,19 +296,19 @@ CalcTools::Tokens CalcTools::Parse(Tokens a)
     return output;
 }
 
-bool CalcTools::isVec(CalcTools::Token a)
+bool CalcTools::isVec(const CalcTools::Token& a)
 {
     return a.type() == VEC || a.type() == VECOBJ;
 }
 
-bool CalcTools::isNum(CalcTools::Token a)
+bool CalcTools::isNum(const CalcTools::Token& a)
 {
     return a.type() == NUM;
 }
 
 CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel* db)
 {
-    if (expr.empty()) throw "empty expr";
+    if (expr.empty()) throw "got an empty expr";
 
     std::stack<CalcTools::Token> stack;
 
@@ -291,20 +359,22 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
                 }
                 else if (CalcTools::isNum(first) && CalcTools::isNum(second))
                 {
-                    stack.push(CalcTools::Token((double)first + (double)second));
+                    stack.push(CalcTools::Token((e_type)first + (e_type)second));
                 }
                 else throw "invalid arguments";
                 vars.clear();
                 break;
             case '-':
                 extractBinary(stack, vars);
+
+
                 if (CalcTools::isVec(first) && CalcTools::isVec(second))
                 {
                     stack.push(sVec - fVec);
                 }
                 else if (CalcTools::isNum(first) && CalcTools::isNum(second))
                 {
-                    stack.push(CalcTools::Token((double)second - (double)first));
+                    stack.push(CalcTools::Token((e_type)second - (e_type)first));
                 }
                 else throw "invalid arguments";
                 vars.clear();
@@ -319,43 +389,131 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
                 }
                 else if (CalcTools::isNum(first) && CalcTools::isNum(second))
                 {
-                    stack.push(CalcTools::Token((double)first * (double)second));
+                    stack.push(CalcTools::Token((e_type)first * (e_type)second));
                 }
                 else if (CalcTools::isVec(first) && CalcTools::isNum(second))
                 {
-                    stack.push(fVec * (double)second);
+                    stack.push(fVec * (e_type)second);
                 }
                 else if (CalcTools::isVec(second) && CalcTools::isNum(first))
                 {
-                    stack.push(sVec * (double)first);
+                    stack.push(sVec * (e_type)first);
                 }
                 else throw "invalid arguments";
                 vars.clear();
                 break;
             case '/':
                 //Деление некоммутативно, поэтому рассматривает только
-                //Vec / double и double / double
+                //Vec / e_type и e_type / e_type
                 extractBinary(stack, vars);
                 if (CalcTools::isNum(first) && CalcTools::isNum(second))
                 {
-                    stack.push(CalcTools::Token((double)second / (double)first));
+                    stack.push(CalcTools::Token((e_type)second / (e_type)first));
                 }
                 else if (CalcTools::isVec(second) && CalcTools::isNum(first))
                 {
-                    stack.push(sVec / (double)first);
+                    stack.push(sVec / (e_type)first);
                 }
                 else throw "invalid arguments";
                 vars.clear();
                 break;
-#undef first
-#undef second
-#undef fVec
-#undef sVec
+            case '|':
+                extractSingle(stack, vars);
+
+                stack.push(
+                    ((VecLib::Vector)first).elementsSum()
+                    );
+
+                vars.clear();
+
+                break;
+
+            case '&':
+                extractSingle(stack, vars);
+
+                stack.push(
+                    ((VecLib::Vector)first).elementsProd()
+                    );
+
+                vars.clear();
+
+                break;
+
+            case '%':
+                extractSingle(stack, vars);
+
+                stack.push(
+                    ((VecLib::Vector)first).module()
+                    );
+
+                vars.clear();
+
+                break;
+            case '$':
+                extractBinary(stack, vars);
+
+                stack.push(
+                    ((VecLib::Vector)second).at((ul)((e_type)first))
+                    );
+
+                vars.clear();
+
+                break;
+            case '<':
+                extractSingle(stack, vars);
+
+                //блять пиши свою сортироовку мудак ебучий
+
+                stack.push(fVec.AscSort());
+                vars.clear();
+
+                break;
+            case '>':
+                extractSingle(stack, vars);
+
+                //ну блять надеюсь ты не забыл про лямбды сравнения
+
+                stack.push(fVec.DesSort());
+                vars.clear();
+
+                break;
+            case '~':
+                extractSingle(stack, vars);
+
+                //напиши ещё блять ревёрс ёбаный
+                stack.push(VecLib::Vector(fVec).reverse());
+
+                vars.clear();
+
+                break;
+            case '#':
+                extractBinary(stack, vars);
+
+                //ну тут вообще ёбля начинается
+
+                break;
+            case '^':
+                extractBinary(stack, vars);
+
+
+                //ой бляяяяяя....
+
+                break;
+
+            // '\' - sumElems
+            // '&' - prodElems
+            // '%' - module
+            // '$' - at
+            // '<' - ascending sort
+            // '>' - descending sort
+            // '~' - reverse
+            // '#' - GCD
+            // '^' - LCR
             case 'p':
                 //Векторное произведение
                 extractSingle(stack, vars);
 
-                int amount = (double)vars[0];
+                int amount = (e_type)vars[0];
 
                 std::vector<VecLib::Vector> vecs;
                 for (int i = 0; i < amount; i++){
@@ -366,6 +524,7 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
                 stack.push(VecLib::vectorProduct(vecs));
                 vars.clear();
                 break;
+
             }
         }
 
@@ -373,3 +532,8 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
 
     return stack.top();
 }
+
+#undef first
+#undef second
+#undef fVec
+#undef sVec

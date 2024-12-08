@@ -43,7 +43,7 @@ QVariant VectorListModel::data(const QModelIndex &index, int role) const
 
         int j = 0;
         for (auto i : curr) {
-            displayStr += tr(dtos(i, 2).c_str());
+            displayStr += tr(std::to_string(i).c_str());
             if (j < curr.size() - 1) {
                 displayStr += tr(", ");
                 j++;

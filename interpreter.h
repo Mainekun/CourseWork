@@ -19,7 +19,7 @@ namespace CalcTools {
 class Token
 {
     IntTokenType type_;
-    std::variant<char, double, std::string, VecLib::Vector> val_;
+    std::variant<char, e_type, std::string, VecLib::Vector> val_;
 
 public:
     Token(char op)
@@ -30,7 +30,7 @@ public:
         : type_(VEC)
         , val_(vec)
     {}
-    Token(double num)
+    Token(e_type num)
         : type_(NUM)
         , val_(num)
     {}
@@ -43,7 +43,7 @@ public:
 
     void operator=(Token);
 
-    operator double();      //
+    operator e_type();      //
     operator char();        //
     operator std::string(); //
     operator VecLib::Vector();
@@ -55,7 +55,7 @@ public:
     //    switch (type_)
     //    {
     //    case NUM:
-    //        return (double)*this == (double)a;
+    //        return (e_type)*this == (e_type)a;
     //    case VEC:
     //        return (std::string)*this == (std::string)a;
     //    case OP:
@@ -76,7 +76,7 @@ public:
 #define _rightS Token(']')
 #define _comma Token(',')
 #define _vec(name) Token(#name)
-//Token _num(double num) { return Token(num); }
+//Token _num(e_type num) { return Token(num); }
 
 using Tokens = std::vector<Token>;
 
@@ -90,11 +90,16 @@ bool ifOp(char *); //
 
 } // namespace ExtraFuns
 
+namespace VecTools
+{
+VecLib::Vector reverse(VecLib::Vector&);
+}
+
 Tokens Tokenize(const char *);
 bool CheckPars(Tokens);
 Tokens Parse(Tokens);
-bool isVec(Token);
-bool isNum(Token);
+bool isVec(const Token&);
+bool isNum(const Token&);
 Token Calculator(Tokens&, VectorListModel*);
 
 } // namespace CalcTools

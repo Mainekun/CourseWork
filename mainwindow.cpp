@@ -66,9 +66,9 @@ void MainWindow::on_VectorView_clicked(const QModelIndex &index)
     QString charString = tr(vec.getName().c_str()) + tr(" [")
                          + tr(std::to_string(vec.size()).c_str()) + tr("] (");
 
-    int j = 0;
-    for (auto i : vec) {
-        charString += tr(dtos(i, 2).c_str());
+    ul j = 0;
+    for (ul i = 0; i < vec.size(); i++) {
+        charString += tr(vec.at_s(i).c_str());
         if (j < vec.size() - 1) {
             charString += tr(", ");
             j++;
@@ -219,14 +219,14 @@ void MainWindow::on_SolveBtn_released()
             int size = resVec.size();
             for (int i = 0; i < size; i++)
             {
-                formedResult += tr(dtos(resVec.at(i),2).c_str());
+                formedResult += tr(std::to_string(resVec.at(i)).c_str());
                 if (i < size - 1) formedResult += tr(", ");
             }
             formedResult += tr(")\n");
         }
         else if (result.type() == IntTokenType::NUM)
         {
-            formedResult += tr(dtos((double)result, 2).c_str());
+            formedResult += tr(std::to_string((e_type)result).c_str());
         }
         else
             formedResult += tr("bad expression");
@@ -267,7 +267,49 @@ void MainWindow::on_SaveResultBtn_released()
     {
         errDlg("nothing to save");
     }
+}
+
+void MainWindow::on_MaxIndexesBtn_released()
+{
+    VecLib::Vector curr = ui->
+                          OperandBox->
+                          currentData(VectorListModel::VectorRole)
+                              .value<VecLib::Vector>();
+    std::vector<ul> result = curr.maxsIndices();
+
+    QString resLine = "Max value: ";
+    resLine += curr.at_s(result.at(0));
+    resLine += "\nIndecies: ";
+    ul commas = 0;
+    for (auto& i : result)
+    {
+        resLine += std::to_string(i).c_str();
+        if (commas < result.size() - 1) resLine += ", ";
+    }
+
+    ui->ResultLine->setText(resLine);
+}
 
 
+void MainWindow::on_MinIndexesBtn_released()
+{
+    VecLib::Vector curr = ui->
+                          OperandBox->
+                          currentData(VectorListModel::VectorRole)
+                              .value<VecLib::Vector>();
+    std::vector<ul> result = curr.minsIndices();
+
+    QString resLine = "Min value: ";
+    resLine += curr.at_s(result.at(0));
+    resLine += "\nIndecies: ";
+    ul commas = 0;
+    for (auto& i : result)
+    {
+        resLine += std::to_string(i).c_str();
+        if (commas < result.size() - 1) resLine += ", ";
+        commas++;
+    }
+
+    ui->ResultLine->setText(resLine);
 }
 

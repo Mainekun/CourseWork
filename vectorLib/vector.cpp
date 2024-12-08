@@ -6,7 +6,7 @@ void VecLib::Vector::init(const std::string name, const ul size) try
 {
     _name = name;
     _size = size;
-    _elements = new double[size]{0};
+    _elements = new e_type[size]{0};
 }
 catch(std::bad_alloc& e)
 {
@@ -17,7 +17,7 @@ catch(std::bad_alloc& e)
 VecLib::Vector::Vector(
     const std::string name,
     const ul size,
-    double const * elements)
+    e_type const * elements)
 {
     init(name, size);
     i_RANGE_0_TO_N(_size)
@@ -28,7 +28,7 @@ VecLib::Vector::Vector(
 VecLib::Vector::Vector(
     const std::string name,
     const ul size,
-    const double filler)
+    const e_type filler)
 {
     init(name, size);
     i_RANGE_0_TO_N(_size)
@@ -46,7 +46,7 @@ VecLib::Vector::~Vector() { delete[] _elements; }
 
 ul VecLib::Vector::size() const { return _size; }
 
-double& VecLib::Vector::at(ul index) const
+e_type& VecLib::Vector::at(ul index) const
 {
     if (index >= _size) throw std::out_of_range("");
     return _elements[index];
@@ -62,20 +62,6 @@ void VecLib::Vector::setName(std::string name)
     _name = name;
 }
 
-inline bool VecLib::isSizesEqual(VecLib::Vector a, VecLib::Vector b)
-{ return a._size == b._size; }
-
-bool VecLib::operator==(VecLib::Vector a, VecLib::Vector b)
-{
-    if (!isSizesEqual(a, b)) return false;
-
-    for (ul i = 0; i < a._size; i++)
-        if (a.at(i) != b.at(i))
-            return false;
-
-    return true;
-}
-
 VecLib::Vector VecLib::Vector::operator=(VecLib::Vector a)
 {
     _name = a._name;
@@ -84,7 +70,7 @@ VecLib::Vector VecLib::Vector::operator=(VecLib::Vector a)
         delete[] _elements;
 
     _size = a._size;
-    _elements = new double[_size];
+    _elements = new e_type[_size];
 
     for (ul i = 0; i < _size; i++)
         _elements[i] = a._elements[i];
