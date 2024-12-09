@@ -106,7 +106,7 @@ CalcTools::Token CalcTools::ExtraFuns::readOp(char *&c)
 
 bool CalcTools::ExtraFuns::ifNum(char *c)
 {
-    return (*c >= '0' && *c <= '9');
+    return (*c >= '0' && *c <= '9') || (*c == '-' && *(c+1) >= '0' && *(c+1) <= '9');
 }
 
 bool CalcTools::ExtraFuns::ifVec(char *c)
