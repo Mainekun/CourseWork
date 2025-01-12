@@ -155,10 +155,15 @@ public:
 
     friend Vector GCD(Vector, Vector);
     friend Vector LCD(Vector, Vector);
+
 };
+
 
 Vector operator+(Vector, Vector);
 Vector operator-(Vector, Vector);
+
+Vector NOD(Vector, Vector);
+Vector NOK(Vector, Vector);
 
 Vector vectorProduct(std::vector<Vector>);
 

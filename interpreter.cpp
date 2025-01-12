@@ -10,15 +10,15 @@ std::map<char, int> opersPriority
        {'[', 0},
        {']', 0},
        {',', 0},
-       {'|', 3},
-       {'&', 3},
+       {'|', 1},
+       {'&', 2},
        {'%', 3},
        {'$', 3},
-       {'a', 3},
-       {'d', 3},
-       {'r', 3},
-       {'#', 3},
-       {'^', 3}
+       {'>', 3},
+       {'<', 3},
+       {'~', 3},
+       {'#', 2},
+       {'^', 2}
 };
 
 // '\' - sumElems
@@ -29,7 +29,7 @@ std::map<char, int> opersPriority
 // 'd' - descending sort
 // 'r' - reverse
 // '#' - GCD
-// '^' - LCR
+// '^' - LCM
 
 CalcTools::Token::operator e_type()
 {
@@ -118,8 +118,7 @@ bool CalcTools::ExtraFuns::ifOp(char *c)
 {
     return *c == '+' || *c == '-' || *c == '*' || *c == '/' || *c == '(' || *c == ')' || *c == '['
            || *c == ']' || *c == ',' || *c == '|' || *c == '&' || *c == '%'
-           || *c == '$' || *c == '<' || *c == '>' || *c == '~' || *c == '#'
-           || *c == '^';
+           || *c == '$' || *c == '<' || *c == '>' || *c == '~' || *c == '#' || *c == '^';
     // '\' - sumElems
     // '&' - prodElems
     // '%' - module
@@ -127,8 +126,6 @@ bool CalcTools::ExtraFuns::ifOp(char *c)
     // '<' - ascending sort
     // '>' - descending sort
     // '~' - reverse
-    // '#' - GCD
-    // '^' - LCR
 }
 
 //CalcTools
@@ -486,20 +483,26 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
                 vars.clear();
 
                 break;
-            case '#':
+            case '#': //GCD
+
                 extractBinary(stack, vars);
 
-                //ну тут вообще ёбля начинается
+                stack.push(VecLib::NOD(fVec, sVec));
+
+                vars.clear();
 
                 break;
             case '^':
+
                 extractBinary(stack, vars);
 
+                stack.push(VecLib::NOK(fVec, sVec));
 
-                //ой бляяяяяя....
+                vars.clear();
 
                 break;
 
+            //ноды
             // '\' - sumElems
             // '&' - prodElems
             // '%' - module
@@ -508,7 +511,7 @@ CalcTools::Token CalcTools::Calculator(CalcTools::Tokens& expr, VectorListModel*
             // '>' - descending sort
             // '~' - reverse
             // '#' - GCD
-            // '^' - LCR
+            // '^' - LCM
             case 'p':
                 //Векторное произведение
                 extractSingle(stack, vars);

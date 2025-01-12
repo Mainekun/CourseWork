@@ -3,10 +3,12 @@ release/Parser.o
 release/interpreter.o
 release/main.o
 release/mainwindow.o
+release/opinfo.o
 release/vector.o
 release/vectorexceptions.o
 release/vectoriterator.o
 release/vectormath.o
 release/vectorlistmodel.o
 release/moc_mainwindow.o
+release/moc_opinfo.o
 release/moc_vectorlistmodel.o

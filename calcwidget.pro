@@ -9,6 +9,7 @@ SOURCES += \
     interpreter.cpp \
     main.cpp \
     mainwindow.cpp \
+    opinfo.cpp \
     vectorLib/vector.cpp \
     vectorLib/vectorexceptions.cpp \
     vectorLib/vectoriterator.cpp \
@@ -19,7 +20,8 @@ SOURCES += \
 TARGET = main.cpp
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    opinfo.ui
 
 HEADERS += \
     Lexer.h \
@@ -27,5 +29,6 @@ HEADERS += \
     interpreter.h \
     mainwindow.h \
     matrix.h \
+    opinfo.h \
     vectorLib/vector.h \
     vectorlistmodel.h

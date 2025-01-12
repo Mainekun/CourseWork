@@ -49,6 +49,8 @@ public:
     QTextEdit *ResultLine;
     QPushButton *MaxIndexesBtn;
     QPushButton *MinIndexesBtn;
+    QWidget *tab;
+    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -150,6 +152,12 @@ public:
         MinIndexesBtn->setObjectName("MinIndexesBtn");
         MinIndexesBtn->setGeometry(QRect(250, 10, 110, 30));
         FuncTabBox->addTab(UtilityTab, QString());
+        tab = new QWidget();
+        tab->setObjectName("tab");
+        pushButton = new QPushButton(tab);
+        pushButton->setObjectName("pushButton");
+        pushButton->setGeometry(QRect(10, 10, 360, 120));
+        FuncTabBox->addTab(tab, QString());
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -163,7 +171,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        FuncTabBox->setCurrentIndex(1);
+        FuncTabBox->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -184,6 +192,8 @@ public:
         MaxIndexesBtn->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\320\264\320\265\320\272\321\201\321\213 \320\274\320\260\320\272\321\201.", nullptr));
         MinIndexesBtn->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\320\264\320\265\320\272\321\201\321\213 \320\274\320\270\320\275.", nullptr));
         FuncTabBox->setTabText(FuncTabBox->indexOf(UtilityTab), QCoreApplication::translate("MainWindow", "\320\240\320\260\320\267\320\275\320\276\320\265", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "\320\241\320\277\321\200\320\260\320\262\320\272\320\260", nullptr));
+        FuncTabBox->setTabText(FuncTabBox->indexOf(tab), QCoreApplication::translate("MainWindow", "\320\236\320\277\320\265\321\200\320\260\321\206\320\270\320\270", nullptr));
     } // retranslateUi
 
 };

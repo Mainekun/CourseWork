@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OpInfo</class>
+ <widget class="QDialog" name="OpInfo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Справка по операциям</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="QIcon::ThemeIcon::DialogQuestion"/>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>380</width>
+     <height>280</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;
+&lt;head/&gt;
+&lt;body&gt;
+&lt;style&gt;
+li:first-child {
+margin-left: 10px;
+}
+
+li:nth-child(2) {
+margin-left: 20px;
+}
+&lt;/style&gt;
+&lt;ul&gt;
+&lt;li&gt;+, - стандартны для векторов и чисел&lt;/li&gt;
+&lt;li&gt;нюансы '*'
+&lt;ul&gt;
+&lt;li&gt;Для двух векторов - в качестве скалярного умножения&lt;/li&gt;
+&lt;li&gt;Для двух чисел - в качестве обычного умножения&lt;/li&gt;
+&lt;li&gt;Для вектора и числа - умножение на скаляр&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;/ - деление чисел&lt;/li&gt;
+&lt;li&gt;|, &amp;#38; -  сумма, произведение элементов вектора&lt;/li&gt;
+&lt;li&gt;%, ~ - модуль вектора, развернуть вектор&lt;/li&gt;
+&lt;li&gt;$ - элемент по индексу&lt;/li&gt;
+&lt;li&gt;&amp;lt;,&amp;gt;  - сортировка элементов по возрастанию, убыванию&lt;/li&gt;
+&lt;li&gt;#, ^ - НОД, НОК векторов&lt;/li&gt;
+
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

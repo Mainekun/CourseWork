@@ -313,3 +313,9 @@ void MainWindow::on_MinIndexesBtn_released()
     ui->ResultLine->setText(resLine);
 }
 
+
+void MainWindow::on_pushButton_released()
+{
+    OpInfo(this).exec();
+}
+

@@ -235,3 +235,42 @@ VecLib::Vector VecLib::Vector::reverse()
 
     return result;
 }
+
+VecLib::Vector VecLib::NOD(Vector a, Vector b)
+{
+    SIZE_CHECK(a, b);
+    Vector c = Vector("result", a.size());
+
+    int ai, bi, tmp;
+    for (ul i = 0; i < a.size(); i++)
+    {
+        ai = a.at(i);
+        bi = b.at(i);
+
+        for (int j = 0; (ai != bi || ai >= 0.01 || bi >= 0.01) && j != 100 ; j++)
+        {
+            tmp = ai - bi;
+            tmp = tmp < 0 ? -tmp : tmp;
+            if (ai > bi) ai = tmp;
+            else bi = tmp;
+
+        }
+
+        c.at(i) = ai;
+    }
+
+    return c;
+}
+
+VecLib::Vector VecLib::NOK(Vector a, Vector b)
+{
+    SIZE_CHECK(a, b);
+    Vector nod = NOD(a, b), c = Vector("result", a.size());
+
+    for (ul i = 0; i < a.size(); i++)
+    {
+        c.at(i) = a.at(i) * b.at(i) / nod.at(i);
+    }
+
+    return c;
+}

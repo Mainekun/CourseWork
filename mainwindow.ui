@@ -191,7 +191,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <property name="elideMode">
      <enum>Qt::TextElideMode::ElideNone</enum>
@@ -302,6 +302,24 @@
       </property>
       <property name="text">
        <string>Индексы мин.</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Операции</string>
+     </attribute>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>360</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Справка</string>
       </property>
      </widget>
     </widget>

@@ -18,6 +18,7 @@
 #include "Parser.h"
 #include "interpreter.h"
 #include "vectorlistmodel.h"
+#include "opinfo.h"
 
 using namespace VectorParser;
 using namespace VectorLexer;
@@ -58,6 +59,8 @@ private slots:
     void on_MaxIndexesBtn_released();
 
     void on_MinIndexesBtn_released();
+
+    void on_pushButton_released();
 
 private:
     Ui::MainWindow *ui;
